@@ -1,34 +1,612 @@
-/* Feuille de style de départ : le projet évalue React, pas le CSS.
-   Tu peux l'utiliser telle quelle, la modifier, ou demander à une IA de réécrire tout le CSS
-   et de placer les classes (className) dans ton JSX : c'est la seule aide complète autorisée. */
+/* ==========================================================================
+   Teranga Blog : feuille de style (nude, doux, raffiné)
+   --------------------------------------------------------------------------
+   Écrite par une IA, ce qui est autorisé pour le CSS (voir AGENTS.md).
+   Le guide des classes est dans GUIDE-CLASSES.md : il dit quelle classe
+   mettre sur quel élément de ton JSX.
+   ========================================================================== */
+
+/* Polices : titres élégants + texte très lisible. Si la police ne charge pas
+   (hors ligne), le navigateur prend les polices de secours indiquées plus bas. */
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;600&display=swap");
+
+/* --------------------------------------------------------------------------
+   1. Palette et réglages
+   -------------------------------------------------------------------------- */
 :root {
-  --fond: #f7f8fa;
-  --texte: #1f1f1f;
-  --discret: #666666;
-  --accent: #0b6e4f;
-  --bord: #dddddd;
-  --erreur: #b3261e;
+  /* Fonds */
+  --fond: #faf6f1;          /* ivoire chaud */
+  --surface: #fffdfa;       /* presque blanc, pour les cartes */
+  --sable: #f3ebe2;         /* aplats doux */
+  --sable-fonce: #eadfd2;
+
+  /* Textes */
+  --texte: #3b302a;         /* cacao profond (contraste élevé) */
+  --discret: #6f6057;       /* texte secondaire, reste lisible */
+
+  /* Accent : terracotta nude */
+  --accent: #8f5d46;
+  --accent-fonce: #764a36;
+  --accent-doux: #efdfd3;   /* fond de badge, survol */
+
+  /* Autres teintes douces */
+  --bord: #e7dbcf;
+  --bord-fort: #d6c4b4;
+  --erreur: #a1453a;
+  --erreur-fond: #fbeeea;
+  --succes: #5f7255;
+  --succes-fond: #eef2ea;
+
+  /* Typographie */
+  --police-titre: "Cormorant Garamond", "Iowan Old Style", Georgia, serif;
+  --police-texte: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Formes et ombres */
+  --rayon: 14px;
+  --rayon-petit: 10px;
+  --ombre: 0 1px 2px rgba(91, 66, 50, 0.05), 0 8px 24px -12px rgba(91, 66, 50, 0.14);
+  --ombre-haute: 0 2px 4px rgba(91, 66, 50, 0.06), 0 16px 32px -14px rgba(91, 66, 50, 0.2);
+  --transition: 180ms ease;
 }
+
+/* --------------------------------------------------------------------------
+   2. Base
+   -------------------------------------------------------------------------- */
 * { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
 body {
   margin: 0;
-  font-family: system-ui, Arial, sans-serif;
-  background: var(--fond);
+  min-height: 100vh;
+  font-family: var(--police-texte);
+  font-size: 1.0625rem;       /* 17 px : confortable à lire */
+  line-height: 1.7;
   color: var(--texte);
-  line-height: 1.6;
+  background: var(--fond);
+  -webkit-font-smoothing: antialiased;
 }
-.conteneur { max-width: 960px; margin: 0 auto; padding: 1.5rem 1rem; }
-.barre-nav { background: #fff; border-bottom: 1px solid var(--bord); }
-.barre-nav .conteneur { display: flex; gap: 1.25rem; align-items: center; flex-wrap: wrap; }
-.barre-nav a { color: var(--texte); text-decoration: none; padding: .25rem 0; }
-.barre-nav a.active { color: var(--accent); border-bottom: 2px solid var(--accent); font-weight: 600; }
-.grille { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
-.carte { background: #fff; border: 1px solid var(--bord); border-radius: 8px; padding: 1rem; }
-.carte h3 { margin-top: 0; text-transform: capitalize; }
-.bouton { background: var(--accent); color: #fff; border: 0; border-radius: 6px; padding: .5rem .9rem; cursor: pointer; }
-.bouton.secondaire { background: #fff; color: var(--accent); border: 1px solid var(--accent); }
-.champ { display: block; width: 100%; padding: .5rem; margin: .25rem 0 .75rem; border: 1px solid var(--bord); border-radius: 6px; font: inherit; }
-.etat-chargement { color: var(--discret); font-style: italic; }
-.etat-erreur { color: var(--erreur); border: 1px solid var(--erreur); border-radius: 6px; padding: .75rem; }
-.message-erreur { color: var(--erreur); font-size: .9rem; margin: -.5rem 0 .75rem; }
-.discret { color: var(--discret); font-size: .9rem; }
+
+::selection { background: var(--accent-doux); color: var(--texte); }
+
+h1, h2, h3, h4 {
+  font-family: var(--police-titre);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.005em;
+  margin: 0 0 0.6em;
+  color: var(--texte);
+}
+h1 { font-size: clamp(2.2rem, 4vw + 1rem, 3.2rem); }
+h2 { font-size: clamp(1.6rem, 2vw + 1rem, 2.1rem); }
+h3 { font-size: 1.4rem; }
+
+p { margin: 0 0 1em; }
+
+a {
+  color: var(--accent);
+  text-decoration-color: var(--bord-fort);
+  text-underline-offset: 0.2em;
+  transition: color var(--transition), text-decoration-color var(--transition);
+}
+a:hover { color: var(--accent-fonce); text-decoration-color: currentColor; }
+
+img { max-width: 100%; height: auto; }
+
+ul, ol { padding-left: 1.2rem; }
+
+hr { border: 0; border-top: 1px solid var(--bord); margin: 2rem 0; }
+
+/* Focus clavier visible et élégant */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* --------------------------------------------------------------------------
+   3. Mise en page générale
+   -------------------------------------------------------------------------- */
+.conteneur {
+  width: 100%;
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+
+/* Zone centrale (là où s'affiche l'Outlet) */
+.contenu {
+  padding-top: 2.5rem;
+  padding-bottom: 4rem;
+}
+
+/* Liste sans puces (ul/ol qui servent de conteneur de cartes ou de lignes) */
+.liste-nue { list-style: none; margin: 0; padding: 0; }
+
+/* --------------------------------------------------------------------------
+   4. Barre de navigation
+   -------------------------------------------------------------------------- */
+.barre-nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(250, 246, 241, 0.88);
+  -webkit-backdrop-filter: saturate(1.2) blur(10px);
+  backdrop-filter: saturate(1.2) blur(10px);
+  border-bottom: 1px solid var(--bord);
+}
+
+.barre-nav .conteneur {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
+/* Logo : le fond blanc du PNG se fond dans l'ivoire grâce à multiply */
+.logo { display: inline-flex; align-items: center; line-height: 0; }
+.logo img {
+  display: block;
+  height: 38px;
+  width: auto;
+  mix-blend-mode: multiply;
+}
+
+/* Groupe de liens (ul ou div qui contient les NavLink) */
+.nav-liens {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.barre-nav a:not(.logo) {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.95rem;
+  border-radius: 999px;
+  color: var(--discret);
+  font-size: 0.97rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background var(--transition), color var(--transition);
+}
+.barre-nav a:not(.logo):hover { background: var(--sable); color: var(--texte); }
+
+/* NavLink ajoute automatiquement la classe "active" sur le lien de la page courante */
+.barre-nav a.active {
+  background: var(--accent-doux);
+  color: var(--accent-fonce);
+  font-weight: 600;
+}
+
+/* Petit compteur de favoris dans la barre */
+.nav-compteur {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.45rem;
+  height: 1.45rem;
+  padding: 0 0.4rem;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+/* --------------------------------------------------------------------------
+   5. Entêtes de page et introduction
+   -------------------------------------------------------------------------- */
+.page-entete { margin-bottom: 2rem; }
+.page-entete h1 { margin-bottom: 0.3em; }
+.sous-titre {
+  max-width: 60ch;
+  margin: 0;
+  color: var(--discret);
+  font-size: 1.15rem;
+}
+
+/* Bloc d'accueil */
+.hero {
+  padding: clamp(2rem, 5vw, 3.5rem);
+  margin-bottom: 3rem;
+  border-radius: calc(var(--rayon) + 6px);
+  background:
+    radial-gradient(120% 140% at 100% 0%, #f0ddd0 0%, rgba(240, 221, 208, 0) 55%),
+    var(--sable);
+  border: 1px solid var(--bord);
+}
+.hero h1 { max-width: 18ch; margin-bottom: 0.4em; }
+.hero p { max-width: 54ch; color: var(--discret); font-size: 1.15rem; margin-bottom: 1.5rem; }
+
+/* Titre de section avec un filet fin à droite */
+.section-titre {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 0 0 1.25rem;
+}
+.section-titre::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--bord);
+}
+
+/* Lien « retour » discret */
+.retour {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 1.5rem;
+  color: var(--discret);
+  font-size: 0.95rem;
+  text-decoration: none;
+}
+.retour:hover { color: var(--accent); }
+
+/* --------------------------------------------------------------------------
+   6. Cartes et grilles
+   -------------------------------------------------------------------------- */
+.grille {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+}
+
+.carte {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.5rem;
+  background: var(--surface);
+  border: 1px solid var(--bord);
+  border-radius: var(--rayon);
+  box-shadow: var(--ombre);
+  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+}
+.carte:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--ombre-haute);
+  border-color: var(--bord-fort);
+}
+
+/* Titre de carte : première lettre en majuscule (l'API renvoie du latin en minuscules) */
+.carte__titre {
+  margin: 0;
+  font-size: 1.4rem;
+  line-height: 1.2;
+}
+.carte__titre::first-letter { text-transform: uppercase; }
+.carte__titre a { color: var(--texte); text-decoration: none; }
+.carte__titre a:hover { color: var(--accent); }
+
+/* Extrait limité à 3 lignes */
+.carte__extrait {
+  margin: 0;
+  color: var(--discret);
+  font-size: 0.98rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Ligne d'actions en bas de carte */
+.carte__pied {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: auto;
+  padding-top: 1rem;
+}
+
+/* Petite information de carte (email, entreprise, identifiant...) */
+.carte__meta { margin: 0; color: var(--discret); font-size: 0.92rem; }
+
+/* Pastille d'information (nom d'auteur, entreprise...) */
+.badge {
+  display: inline-block;
+  align-self: flex-start;
+  padding: 0.2rem 0.7rem;
+  border-radius: 999px;
+  background: var(--accent-doux);
+  color: var(--accent-fonce);
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+/* --------------------------------------------------------------------------
+   7. Boutons
+   -------------------------------------------------------------------------- */
+.bouton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.25rem;
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 500;
+  line-height: 1.2;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition), transform var(--transition);
+}
+.bouton:hover { background: var(--accent-fonce); border-color: var(--accent-fonce); color: #fff; }
+.bouton:active { transform: scale(0.98); }
+
+.bouton.secondaire {
+  background: transparent;
+  color: var(--accent);
+  border-color: var(--bord-fort);
+}
+.bouton.secondaire:hover { background: var(--accent-doux); border-color: var(--accent); color: var(--accent-fonce); }
+
+/* Bouton favori : discret au repos, plein quand l'article est en favori */
+.bouton-favori {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.9rem;
+  border: 1px solid var(--bord-fort);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--discret);
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition), border-color var(--transition);
+}
+.bouton-favori:hover { background: var(--accent-doux); color: var(--accent-fonce); border-color: var(--accent); }
+.bouton-favori.actif { background: var(--accent); border-color: var(--accent); color: #fff; }
+.bouton-favori.actif:hover { background: var(--accent-fonce); border-color: var(--accent-fonce); }
+
+/* Lien « lire la suite » */
+.lien-suite {
+  color: var(--accent);
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-decoration: none;
+}
+.lien-suite:hover { text-decoration: underline; }
+
+/* --------------------------------------------------------------------------
+   8. Formulaires et recherche
+   -------------------------------------------------------------------------- */
+.formulaire {
+  display: grid;
+  gap: 0.25rem;
+  padding: 1.5rem;
+  background: var(--surface);
+  border: 1px solid var(--bord);
+  border-radius: var(--rayon);
+  box-shadow: var(--ombre);
+}
+
+.formulaire .bouton { justify-self: start; }
+
+.etiquette {
+  display: block;
+  margin-bottom: 0.3rem;
+  color: var(--texte);
+  font-size: 0.92rem;
+  font-weight: 500;
+}
+
+.champ {
+  display: block;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  margin: 0 0 1rem;
+  border: 1px solid var(--bord-fort);
+  border-radius: var(--rayon-petit);
+  background: #fff;
+  color: var(--texte);
+  font: inherit;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+.champ::placeholder { color: #a39286; }
+.champ:hover { border-color: var(--accent); }
+.champ:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-doux);
+}
+textarea.champ { min-height: 7rem; resize: vertical; }
+
+/* Barre de recherche : champ large et arrondi */
+.recherche { margin-bottom: 2rem; max-width: 520px; }
+.recherche .champ {
+  margin: 0;
+  padding: 0.85rem 1.25rem;
+  border-radius: 999px;
+  box-shadow: var(--ombre);
+}
+
+/* Message de validation sous un champ */
+.message-erreur {
+  margin: -0.5rem 0 1rem;
+  color: var(--erreur);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* --------------------------------------------------------------------------
+   9. Article (détail) et commentaires
+   -------------------------------------------------------------------------- */
+.article { max-width: 720px; }
+.article__titre::first-letter { text-transform: uppercase; }
+.article__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.75rem;
+  color: var(--discret);
+  font-size: 0.95rem;
+}
+.article__texte {
+  font-size: 1.15rem;
+  line-height: 1.85;
+}
+.article__texte::first-letter { text-transform: uppercase; }
+
+.commentaires {
+  max-width: 720px;
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--bord);
+}
+
+.commentaire {
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1rem;
+  background: var(--surface);
+  border: 1px solid var(--bord);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--rayon-petit);
+}
+.commentaire__auteur {
+  margin: 0 0 0.25rem;
+  font-weight: 600;
+  font-size: 0.98rem;
+}
+.commentaire__texte { margin: 0; color: var(--discret); font-size: 0.98rem; }
+
+/* --------------------------------------------------------------------------
+   10. Auteurs
+   -------------------------------------------------------------------------- */
+.fiche-auteur {
+  max-width: 720px;
+  margin-bottom: 3rem;
+  padding: 2rem;
+  background: var(--sable);
+  border: 1px solid var(--bord);
+  border-radius: var(--rayon);
+}
+.fiche-auteur h1 { margin-bottom: 0.15em; }
+.fiche-auteur p { margin: 0 0 0.35em; color: var(--discret); }
+
+/* Rond avec initiale (optionnel) */
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  margin-bottom: 0.5rem;
+  border-radius: 50%;
+  background: var(--accent-doux);
+  color: var(--accent-fonce);
+  font-family: var(--police-titre);
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+/* --------------------------------------------------------------------------
+   11. États : chargement, erreur, vide
+   -------------------------------------------------------------------------- */
+.etat-chargement {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 0;
+  color: var(--discret);
+  font-style: italic;
+}
+.etat-chargement::before {
+  content: "";
+  width: 1.1rem;
+  height: 1.1rem;
+  border: 2px solid var(--bord-fort);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: tourner 0.8s linear infinite;
+}
+@keyframes tourner { to { transform: rotate(360deg); } }
+
+.etat-erreur {
+  padding: 1rem 1.25rem;
+  background: var(--erreur-fond);
+  border: 1px solid #ebc8c1;
+  border-left: 3px solid var(--erreur);
+  border-radius: var(--rayon-petit);
+  color: var(--erreur);
+  font-weight: 500;
+}
+
+/* Rien à afficher (aucun favori, aucun résultat de recherche...) */
+.vide {
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  color: var(--discret);
+  background: var(--sable);
+  border: 1px dashed var(--bord-fort);
+  border-radius: var(--rayon);
+}
+
+/* --------------------------------------------------------------------------
+   12. Page 404 et pages centrées
+   -------------------------------------------------------------------------- */
+.page-centree {
+  max-width: 520px;
+  margin: 3rem auto;
+  text-align: center;
+}
+.code-404 {
+  margin: 0;
+  font-family: var(--police-titre);
+  font-size: clamp(5rem, 18vw, 8rem);
+  font-weight: 700;
+  line-height: 1;
+  color: var(--bord-fort);
+}
+
+/* --------------------------------------------------------------------------
+   13. Utilitaires
+   -------------------------------------------------------------------------- */
+.discret { color: var(--discret); font-size: 0.92rem; }
+.centre { text-align: center; }
+.espace-haut { margin-top: 2rem; }
+
+/* --------------------------------------------------------------------------
+   14. Petits écrans
+   -------------------------------------------------------------------------- */
+@media (max-width: 640px) {
+  body { font-size: 1rem; }
+  .contenu { padding-top: 1.75rem; }
+  .barre-nav .conteneur { justify-content: center; }
+  .logo img { height: 34px; }
+  .nav-liens { justify-content: center; }
+  .barre-nav a:not(.logo) { padding: 0.4rem 0.75rem; font-size: 0.92rem; }
+  .grille { grid-template-columns: 1fr; gap: 1.1rem; }
+  .carte { padding: 1.25rem; }
+  .fiche-auteur { padding: 1.5rem; }
+  .recherche { max-width: none; }
+}
+
+/* Respecte les personnes qui limitent les animations */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
